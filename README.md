@@ -2,13 +2,13 @@
 Support AWX single node deployment
 
 Short description:
-We used playbooks to prepared the awx node.
-Prerequirements:
+We used playbooks to prepare an awx node.
+Pre-requirements:
 - based on Centos v7,
 - techical user which is able to login to planned awx node using ssh and become to root without password
 OR
 you can run the playbooks, directly on the target node
-- change the 'defaultuser' in playbooks
+- change the 'defaultuser' username in playbooks
 
 The playbooks prepare the target node:
 - prep-new-awx-install-docker.yml,
