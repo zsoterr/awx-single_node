@@ -1,0 +1,91 @@
+---
+- hosts: "newawxnodes"
+  user: defaultuser
+  become: yes
+  tasks:
+# not required: previous task already updated that
+#  - name: "Update yum repositories"
+#    yum:
+#      update_cache: no
+
+  - name: "Uncomment/Enable public key authentication via ssh."
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: '#PubkeyAuthentication yes'
+      replace: 'PubkeyAuthentication yes'
+      backup: yes
+    tags: sshd
+    notify:
+    - reload sshd
+
+  - name: "Install necessary packages."
+    yum:
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - git
+        - gcc-c++
+        - nodejs
+        - gettext
+        - python3
+        - npm
+        - python-pip
+        - libselinux-python3
+        - python36-docker
+#        - device-mapper-persistent-data
+#        - lvm2
+#        - bzip2
+#        - python3-pip
+#        - yum-utils
+#        - ansible
+#        - python-pip
+#        - telnet
+      state: present
+
+  - name: "List ansible package version  and register result."
+    yum:
+      list: ansible
+    register: ansiblever
+
+#  - name: set package version
+#    set_fact:
+#      package_name_version: "{{ package_name_version.results|selectattr('yumstate','equalto','installed')|map(attribute='version')|list|first }}"
+
+  - name: "Update ansible package."
+    yum:
+      name: ansible
+      state: present
+    when: not ansiblever
+
+# install if f you are using Ansible >= 2.10
+# shell-el? https://docs.ansible.com/ansible/latest/collections/community/general/docker_image_module.html
+
+
+#  - name: "Upgrade pip."
+#    pip:
+#      name: pip
+#      state: latest
+
+  - name: "Remove docker-py using pip."
+    pip:
+      name: docker-py
+      state: absent
+
+  - name: "Install docker python library."
+    pip:
+      name: docker,docker-compose
+      state: present
+
+  - name: "Install docker-compose using pip3."
+    pip:
+      executable: pip3
+#      virtualenv: /tmp/py3
+#      virtualenv_command: /usr/bin/python3 -m venv
+      name: docker-compose
+      state: present
+
+  handlers:
+    - name: "reload sshd"
+      service:
+        name=sshd
+        state=reloaded
