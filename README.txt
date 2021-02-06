@@ -14,7 +14,7 @@ The playbooks prepare the target node:
 - prep-new-awx-install-docker.yml,
 - prep-new-awx-nodes.yml
 
-After the preparation you can run the AWX v15 single node "offical installer":
+After the preparation you can run the AWX v19 single node "offical" installer:
 on the prepared awx node:
  wget https://github.com/ansible/awx/archive/16.0.0.tar.gz 
  tar xzf 16.0.0.tar.gz
