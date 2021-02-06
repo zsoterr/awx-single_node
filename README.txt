@@ -39,4 +39,3 @@ CONTAINER ID   IMAGE                COMMAND                  CREATED            
 c140006b7626   ansible/awx:16.0.0   "/usr/bin/tini -- /b…"   About a minute ago   Up 56 seconds   0.0.0.0:80->8052/tcp   awx_web
 01b1b0cd5d43   redis                "docker-entrypoint.s…"   About a minute ago   Up 58 seconds   6379/tcp               awx_redis
 2f2e2ab555f9   postgres:10          "docker-entrypoint.s…"   About a minute ago   Up 49 seconds   5432/tcp               awx_postgres
-[root@pressi-dock-awx-new-node1 installer]# docker exec -i awx_task -c "ls -la /tmp"
